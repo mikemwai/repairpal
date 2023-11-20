@@ -28,7 +28,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDCFMSYs-aK5ylE_zd6Kw-nUbjD_gz6eiI"
+            android:value="@string/google_maps_key"
             />
 
         <activity
@@ -38,10 +38,6 @@
             android:theme="@style/Theme.AppCompat"/>
         <activity
             android:name=".CarIssueActivity"
-            android:exported="true"
-            android:theme="@style/Theme.AppCompat" />
-        <activity
-            android:name=".VehicleSelectionActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat" />
         <activity

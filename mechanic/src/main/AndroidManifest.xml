@@ -22,7 +22,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDCFMSYs-aK5ylE_zd6Kw-nUbjD_gz6eiI" />
+            android:value="@string/google_maps_key" />
 
         <activity
             android:name=".MechanicMapsActivity"
@@ -43,10 +43,6 @@
              project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
              "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
         -->
-        <activity
-            android:name=".VehicleSelectionActivity"
-            android:exported="true"
-            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".RegistrationActivity"
             android:exported="true"
