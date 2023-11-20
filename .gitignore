@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+<<<<<<< HEAD
+=======
+/mechanic
+>>>>>>> 495e8a8e0a56d715765b4561101d31e25598cb72
