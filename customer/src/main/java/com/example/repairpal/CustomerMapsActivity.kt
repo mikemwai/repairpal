@@ -2,6 +2,7 @@ package com.example.repairpal
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.MarkerOptions
@@ -21,6 +22,8 @@ class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityCustomerMapsBinding
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var lastLocation: Location
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,39 @@ class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+    }
+    companion object{
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+    }
+
+    private fun placeMarkerOnMap(location: LatLng){
+        val markerOptions = MarkerOptions().position(location)
+        mMap.addMarker(MarkerOptions().position(location).title( "Marker in $location"))
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        mMap.uiSettings.isZoomControlsEnabled = true
+        mMap.setOnMarkerClickListener(this)
+        setUpMap()
+    }
+    private fun setUpMap(){
+        if (ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE)
+            return
+        }
+        mMap.isMyLocationEnabled = true
+        fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
+            if(location != null) {
+                lastLocation = location
+                val currentLatLng = LatLng(location.latitude,location.longitude)
+                placeMarkerOnMap(currentLatLng)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,12f))
+            }
+        }
     }
 
     /**
@@ -43,12 +79,9 @@ class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+   
+}
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-    }
+private fun GoogleMap.setOnMarkerClickListener(customerMapsActivity: CustomerMapsActivity) {
+
 }

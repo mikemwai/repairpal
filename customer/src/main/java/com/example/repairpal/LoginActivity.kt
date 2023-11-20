@@ -15,7 +15,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.loginButton.setOnClickListener {
-            startActivity(Intent(this, VehicleSelectionActivity::class.java))
+            startActivity(Intent(this, DrawerActivity::class.java))
         }
     }
 }
