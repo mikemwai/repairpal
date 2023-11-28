@@ -16,5 +16,3 @@ dependencyResolutionManagement {
 rootProject.name = "RepairPal"
 include(":customer")
 include(":customer:mechanic")
-include(":admin")
-include(":mechanic")

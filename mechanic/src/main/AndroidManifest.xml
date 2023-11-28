@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -8,7 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RepairPal">
-
+        <activity
+            android:name=".MechanicDrawerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_mechanic_drawer"
+            android:theme="@style/Theme.RepairPal.NoActionBar" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 

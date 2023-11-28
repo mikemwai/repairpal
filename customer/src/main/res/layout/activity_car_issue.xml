@@ -63,6 +63,14 @@
                     android:textAlignment="center"
                     android:textSize="20dp"
                     />
+                <CheckBox
+                    android:id="@+id/batteryCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select"
+                    android:padding="16dp"
+                    android:layout_gravity="center_horizontal"/>
+
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -94,6 +102,13 @@
                     android:textAlignment="center"
                     android:textSize="20dp"
                     />
+                <CheckBox
+                    android:id="@+id/flatTireCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select"
+                    android:padding="16dp"
+                    android:layout_gravity="center_horizontal"/>
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
@@ -125,6 +140,13 @@
                     android:textAlignment="center"
                     android:textSize="20dp"
                     />
+                <CheckBox
+                    android:id="@+id/fuelCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select"
+                    android:padding="16dp"
+                    android:layout_gravity="center_horizontal"/>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -155,6 +177,13 @@
                     android:textAlignment="center"
                     android:textSize="20dp"
                     />
+                <CheckBox
+                    android:id="@+id/keylockCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select"
+                    android:padding="16dp"
+                    android:layout_gravity="center_horizontal"/>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -185,6 +214,13 @@
                     android:textAlignment="center"
                     android:textSize="20dp"
                     />
+                <CheckBox
+                    android:id="@+id/towingCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select"
+                    android:padding="16dp"
+                    android:layout_gravity="center_horizontal"/>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -215,6 +251,13 @@
                     android:textAlignment="center"
                     android:textSize="20dp"
                     />
+                <CheckBox
+                    android:id="@+id/otherCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select"
+                    android:padding="16dp"
+                    android:layout_gravity="center_horizontal"/>
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
