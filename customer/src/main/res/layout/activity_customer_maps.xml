@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".CustomerMapsActivity"
@@ -7,82 +7,37 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
+    <!-- Map fragment -->
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true" />
 
-    <LinearLayout
-        android:id="@+id/rideOptions"
-        android:layout_width="match_parent"
+    <!-- TextView to display selected issues -->
+    <TextView
+        android:id="@+id/selectedIssuesTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:padding="30dp"
+        android:layout_margin="16dp"
+        android:textSize="18sp"
+        android:textColor="@color/black"
         android:background="@drawable/rounded_bg"
-        android:orientation="vertical">
+        android:padding="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:text="Selected Issues: Battery, Flat Tire" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:orientation="horizontal">
+    <Button
+        android:id="@+id/requestButton"
+        android:layout_width="254dp"
+        android:layout_height="55dp"
+        android:layout_alignBottom="@id/map"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:text="Request" />
 
-            <ImageView
-                android:id="@+id/mechProfile"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/mecha"/>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingStart="16dp">
-
-                <TextView
-                    android:id="@+id/mechName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mechanic Name"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/etaText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="5 minutes away"
-                    android:textSize="14sp"
-                    android:textColor="@color/black" />
-
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="end">
-
-        <Button
-            android:id="@+id/cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#000080"
-            android:text="cancel"/>
-        <Button
-            android:id="@+id/findAnother"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#000080"
-            android:text="Find Another"/>
-
-    </LinearLayout>
-    </LinearLayout>
 </RelativeLayout>
-
-
-
-

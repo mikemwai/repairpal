@@ -2,86 +2,164 @@ package com.example.repairpal
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.maps.model.MarkerOptions
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.example.repairpal.databinding.ActivityCustomerMapsBinding
+import android.widget.Button
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
-
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 
 class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-    private lateinit var binding: ActivityCustomerMapsBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var lastLocation: Location
+    private lateinit var mechanicsRef: DatabaseReference
+    private lateinit var requestButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_customer_maps)
 
-        binding = ActivityCustomerMapsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-    }
-    companion object{
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
-    }
+        mechanicsRef = FirebaseDatabase.getInstance().reference.child("mechanics")
 
-    private fun placeMarkerOnMap(location: LatLng){
-        val markerOptions = MarkerOptions().position(location)
-        mMap.addMarker(MarkerOptions().position(location).title( "Marker in $location"))
+        requestButton = findViewById(R.id.requestButton)
+        requestButton.setOnClickListener {
+            requestButton.text = "Searching for Mechanics..."
+            saveRequestToFirebase()
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.uiSettings.isZoomControlsEnabled = true
-        mMap.setOnMarkerClickListener(this)
-        setUpMap()
+
+        fetchUserLocation()
+        fetchMechanicsLocations()
     }
-    private fun setUpMap(){
-        if (ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST_CODE)
+
+    private fun fetchUserLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
             return
         }
-        mMap.isMyLocationEnabled = true
-        fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
-            if(location != null) {
-                lastLocation = location
-                val currentLatLng = LatLng(location.latitude,location.longitude)
-                placeMarkerOnMap(currentLatLng)
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,12f))
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            location?.let {
+                val userLatLng = LatLng(location.latitude, location.longitude)
+                mMap.addMarker(MarkerOptions().position(userLatLng).title("Your location"))
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 12f))
+
+                val firebaseRef = FirebaseDatabase.getInstance().reference
+                val userId = FirebaseAuth.getInstance().currentUser?.uid
+                if (userId != null) {
+                    firebaseRef.child("users").child(userId).child("location")
+                        .setValue(location)
+                }
             }
         }
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-   
-}
+    private fun fetchMechanicsLocations() {
+        val mechanicGeoRef = FirebaseDatabase.getInstance().reference.child("mechanic_geo_location")
 
-private fun GoogleMap.setOnMarkerClickListener(customerMapsActivity: CustomerMapsActivity) {
+        mechanicGeoRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (mechanicSnapshot in dataSnapshot.children) {
+                    val mechanicId = mechanicSnapshot.key ?: ""
 
+                    // Accessing the 'l' and 'g' keys to retrieve latitude and longitude
+                    val latitude = mechanicSnapshot.child("l").child("0").value as Double
+                    val longitude = mechanicSnapshot.child("l").child("1").value as Double
+
+                    val mechanicLocation = LatLng(latitude, longitude)
+                    val mechanicMarker = mMap.addMarker(
+                        MarkerOptions().position(mechanicLocation).title("Mechanic $mechanicId")
+                    )
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle database error
+            }
+        })
+    }
+
+
+    private fun calculateDistance(
+        userLat: Double,
+        userLng: Double,
+        mechanicLat: Double,
+        mechanicLng: Double
+    ): Float {
+        val results = FloatArray(1)
+        android.location.Location.distanceBetween(userLat, userLng, mechanicLat, mechanicLng, results)
+        return results[0]
+    }
+
+
+    private fun placeMechanicMarkerOnMap(location: LatLng) {
+        mMap.addMarker(MarkerOptions().position(location).title("Mechanic"))
+    }
+
+    private fun saveRequestToFirebase() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            location?.let {
+                val requestRef = FirebaseDatabase.getInstance().reference.child("requests").push()
+
+                val request = HashMap<String, Any>()
+                request["userId"] = userId ?: ""
+                request["latitude"] = location.latitude
+                request["longitude"] = location.longitude
+
+                requestRef.setValue(request)
+                    .addOnSuccessListener {
+                        // Request saved successfully
+                        // Add any additional actions here if needed
+                    }
+                    .addOnFailureListener {
+                        // Failed to save request
+                    }
+            }
+        }
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+    }
 }
