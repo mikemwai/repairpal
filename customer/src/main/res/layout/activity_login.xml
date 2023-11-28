@@ -69,8 +69,9 @@ tools:context=".LoginActivity">
     android:textColor="@color/black"
     />
 <EditText
-    android:id="@+id/phone_edit_text"
+    android:id="@+id/password_edit_text"
     android:layout_width="378dp"
+    android:inputType="textPassword"
     android:layout_height="55dp"
     android:paddingBottom="10dp"
     android:textColor="@color/black"
