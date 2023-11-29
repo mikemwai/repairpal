@@ -6,14 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".SplashScreenActivity">
-
+    tools:context="com.example.repairpal.SplashScreenActivity">
 
     <TextView
         android:layout_width="287dp"
         android:layout_height="55dp"
         android:layout_marginTop="344dp"
-        android:text="Splashscreen"
+        android:text="Repairpal"
         android:textAlignment="center"
         android:textAppearance="@anim/nav_default_pop_enter_anim"
         android:textSize="35sp"

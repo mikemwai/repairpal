@@ -25,11 +25,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MechanicMapsActivity"
+            android:name="com.example.repairpal.MechanicMapsActivity"
             android:exported="true"
             android:label="@string/title_activity_mechanic_maps" />
         <activity
-            android:name=".ServiceRequestActivity"
+            android:name="com.example.repairpal.ServiceRequestActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat" />
         <!--
@@ -44,17 +44,17 @@
              "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
         -->
         <activity
-            android:name=".RegistrationActivity"
+            android:name="com.example.repairpal.RegistrationActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat" />
-        <activity
+        <!--<activity
             android:name=".CarIssueActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat" />
+            android:theme="@style/Theme.AppCompat" />-->
         <activity
             android:name=".MainActivity"
             android:exported="true"

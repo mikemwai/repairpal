@@ -8,7 +8,7 @@
     android:background="@color/white"
     android:layout_gravity="center"
     android:layout_centerInParent="true"
-    tools:context=".RegistrationActivity">
+    tools:context="com.example.repairpal.RegistrationActivity">
 
     <TextView
         android:id="@+id/register_label"

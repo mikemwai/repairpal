@@ -6,7 +6,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
 android:layout_gravity="center"
-    android:background="@color/white"
+android:background="@color/white"
 android:layout_centerInParent="true"
 tools:context=".LoginActivity">
 
@@ -68,7 +68,7 @@ tools:context=".LoginActivity">
     android:textColor="@color/black"
     />
 <EditText
-    android:id="@+id/phone_edit_text"
+    android:id="@+id/password_edit_text"
     android:layout_width="378dp"
     android:layout_height="55dp"
     android:paddingBottom="10dp"
