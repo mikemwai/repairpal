@@ -17,7 +17,7 @@ class StartActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
         }
         binding.btnMechanic.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
+            startActivity(Intent(this, MechanicLoginActivity::class.java))
         }
     }
 }

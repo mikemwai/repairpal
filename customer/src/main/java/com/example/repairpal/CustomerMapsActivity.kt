@@ -10,21 +10,18 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var selectedIssues: ArrayList<String>
     private lateinit var mechanicsRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_maps)
-
-        selectedIssues = intent.getStringArrayListExtra("selectedIssues") ?: arrayListOf()
-
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
@@ -37,7 +34,6 @@ class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isZoomControlsEnabled = true
 
         fetchUserLocation()
-        displaySelectedIssuesMarkers()
         fetchMechanicsLocations()
     }
 
@@ -60,25 +56,16 @@ class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 val userLatLng = LatLng(location.latitude, location.longitude)
                 mMap.addMarker(MarkerOptions().position(userLatLng).title("Your location"))
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 12f))
+
+                // Save the user's location to Firebase Realtime Database
+                val firebaseRef = FirebaseDatabase.getInstance().reference
+                val userId = FirebaseAuth.getInstance().currentUser?.uid
+                if (userId != null) {
+                    firebaseRef.child("users").child(userId).child("location")
+                        .setValue(location)
+                }
             }
         }
-    }
-
-    private fun displaySelectedIssuesMarkers() {
-        selectedIssues.forEach { issue ->
-            val issueLatLng = getLatLngForIssue(issue)
-            placeMarkerOnMap(issueLatLng, issue)
-        }
-    }
-
-    private fun getLatLngForIssue(issue: String): LatLng {
-        // Implement your logic to get LatLng for each issue
-        return LatLng(0.0, 0.0) // Replace with actual LatLng
-    }
-
-    private fun placeMarkerOnMap(location: LatLng, issue: String) {
-        val markerOptions = MarkerOptions().position(location).title("$issue location")
-        mMap.addMarker(markerOptions)
     }
 
     private fun fetchMechanicsLocations() {

@@ -11,4 +11,10 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="action_about">About us</string>
     <string name="title_activity_customer_maps">CustomerMapsActivity</string>
+    <string name="title_activity_mechanic_drawer">MechanicDrawerActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_mech_drawer">MechDrawer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
