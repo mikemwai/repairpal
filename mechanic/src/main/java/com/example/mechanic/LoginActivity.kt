@@ -3,8 +3,7 @@ package com.example.mechanic
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.mechanic.VehicleSelectionActivity
-import com.example.mechanic.databinding.ActivityLoginBinding
+import com.example.repairpal.databinding.ActivityLoginBinding
 
 
 class LoginActivity : AppCompatActivity() {
@@ -16,7 +15,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.loginButton.setOnClickListener {
-            startActivity(Intent(this, VehicleSelectionActivity::class.java))
+            startActivity(Intent(this, MechanicDrawerActivity::class.java))
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.repairpal
 
-import android.location.Location
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -34,8 +35,32 @@ class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         mMap.uiSettings.isZoomControlsEnabled = true
 
+        fetchUserLocation()
         displaySelectedIssuesMarkers()
         fetchMechanicsLocations()
+    }
+
+    private fun fetchUserLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+            return
+        }
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            location?.let {
+                val userLatLng = LatLng(location.latitude, location.longitude)
+                mMap.addMarker(MarkerOptions().position(userLatLng).title("Your location"))
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 12f))
+            }
+        }
     }
 
     private fun displaySelectedIssuesMarkers() {
@@ -77,6 +102,8 @@ class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(location).title("Mechanic"))
     }
 
-    // Other methods and overrides...
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+    }
 }
 
