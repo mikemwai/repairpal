@@ -5,22 +5,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".SplashScreenActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/splashscreen"
+        android:scaleType="centerCrop" />
 
     <TextView
-        android:layout_width="287dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="344dp"
-        android:text="Splashscreen"
-        android:textAlignment="center"
-        android:textAppearance="@anim/nav_default_pop_enter_anim"
-        android:textSize="35sp"
-        android:textStyle="italic"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_width="287dp"
+    android:layout_height="55dp"
+    android:layout_marginTop="344dp"
+    android:text="Repairpal"
+    android:textAlignment="center"
+    android:textAppearance="@anim/nav_default_pop_enter_anim"
+    android:textSize="35sp"
+    android:textStyle="italic"
+    android:textColor="@android:color/white"
+    app:layout_constraintHorizontal_bias="0.495"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
