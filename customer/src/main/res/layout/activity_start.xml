@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".StartActivity">
 
-    <!-- Mechanic Button -->
+    <!-- Customer Button -->
     <Button
         android:id="@+id/btnCustomer"
         android:layout_width="wrap_content"
@@ -14,20 +14,21 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="136dp"
         android:layout_marginTop="108dp"
-        android:text="I'm a Customer"
+        android:text="Customer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Mechanic Button -->
     <Button
         android:id="@+id/btnMechanic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/btnCustomer"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="72dp"
-        android:text="I'm a Mechanic"
-        app:layout_constraintTop_toBottomOf="@id/btnCustomer"
-        tools:layout_editor_absoluteX="140dp"
-        tools:ignore="MissingConstraints" />
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="200dp"
+        android:text="Mechanic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
