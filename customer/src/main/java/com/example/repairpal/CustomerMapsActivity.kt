@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import android.widget.Button
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
@@ -18,15 +19,23 @@ class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mechanicsRef: DatabaseReference
+    private lateinit var requestButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_maps)
+
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         mechanicsRef = FirebaseDatabase.getInstance().reference.child("mechanics")
+
+        requestButton = findViewById(R.id.requestButton)
+        requestButton.setOnClickListener {
+            requestButton.text = "Searching for Mechanics..."
+            saveRequestToFirebase()
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -57,7 +66,6 @@ class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 mMap.addMarker(MarkerOptions().position(userLatLng).title("Your location"))
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 12f))
 
-                // Save the user's location to Firebase Realtime Database
                 val firebaseRef = FirebaseDatabase.getInstance().reference
                 val userId = FirebaseAuth.getInstance().currentUser?.uid
                 if (userId != null) {
@@ -69,14 +77,21 @@ class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun fetchMechanicsLocations() {
-        mechanicsRef.addValueEventListener(object : ValueEventListener {
+        val mechanicGeoRef = FirebaseDatabase.getInstance().reference.child("mechanic_geo_location")
+
+        mechanicGeoRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (mechanicSnapshot in dataSnapshot.children) {
-                    val mechanicLocation = LatLng(
-                        mechanicSnapshot.child("latitude").value as Double,
-                        mechanicSnapshot.child("longitude").value as Double
+                    val mechanicId = mechanicSnapshot.key ?: ""
+
+                    // Accessing the 'l' and 'g' keys to retrieve latitude and longitude
+                    val latitude = mechanicSnapshot.child("l").child("0").value as Double
+                    val longitude = mechanicSnapshot.child("l").child("1").value as Double
+
+                    val mechanicLocation = LatLng(latitude, longitude)
+                    val mechanicMarker = mMap.addMarker(
+                        MarkerOptions().position(mechanicLocation).title("Mechanic $mechanicId")
                     )
-                    placeMechanicMarkerOnMap(mechanicLocation)
                 }
             }
 
@@ -86,12 +101,65 @@ class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         })
     }
 
+
+    private fun calculateDistance(
+        userLat: Double,
+        userLng: Double,
+        mechanicLat: Double,
+        mechanicLng: Double
+    ): Float {
+        val results = FloatArray(1)
+        android.location.Location.distanceBetween(userLat, userLng, mechanicLat, mechanicLng, results)
+        return results[0]
+    }
+
+
     private fun placeMechanicMarkerOnMap(location: LatLng) {
         mMap.addMarker(MarkerOptions().position(location).title("Mechanic"))
+    }
+
+    private fun saveRequestToFirebase() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            location?.let {
+                val requestRef = FirebaseDatabase.getInstance().reference.child("requests").push()
+
+                val request = HashMap<String, Any>()
+                request["userId"] = userId ?: ""
+                request["latitude"] = location.latitude
+                request["longitude"] = location.longitude
+
+                requestRef.setValue(request)
+                    .addOnSuccessListener {
+                        // Request saved successfully
+                        // Add any additional actions here if needed
+                    }
+                    .addOnFailureListener {
+                        // Failed to save request
+                    }
+            }
+        }
     }
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 }
-

@@ -6,175 +6,126 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import com.example.repairpal.R
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.google.android.gms.maps.MapView
 import androidx.fragment.app.Fragment
 import com.example.repairpal.InspectionActivity
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.example.repairpal.databinding.FragmentMechanicHomeBinding
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
-
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 class MechanicHomeFragment : Fragment(), OnMapReadyCallback {
 
-    private lateinit var mapView: MapView
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var googleMap: GoogleMap
-    private lateinit var customerLocationRef: DatabaseReference
-    private lateinit var mechanicLocationRef: DatabaseReference
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var database: DatabaseReference
+    private lateinit var binding: FragmentMechanicHomeBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentMechanicHomeBinding.inflate(inflater, container, false)
+        binding = FragmentMechanicHomeBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        // Find the MapView from the layout
-        mapView = binding.mapView
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
+        binding.mapView.onCreate(savedInstanceState)
+        binding.mapView.getMapAsync(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        customerLocationRef = FirebaseDatabase.getInstance().reference.child("customer_location")
-        mechanicLocationRef = FirebaseDatabase.getInstance().reference.child("mechanic_location")
+        database = FirebaseDatabase.getInstance().reference
 
-        fetchMechanicLocation()
-
-        val startInspectionButton: Button = binding.root.findViewById(R.id.startInspectionButton)
-        startInspectionButton.setOnClickListener {
-            val intent = Intent(requireActivity(), InspectionActivity::class.java)
+        val button7: Button = binding.startInspectionButton
+        button7.setOnClickListener {
+            fetchAndSaveMechanicLocation()
+            showDataSavedAlert()
+            val intent = Intent(requireContext(), InspectionActivity::class.java)
             startActivity(intent)
         }
 
-        return binding.root
+        return view
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        this.googleMap = googleMap
+    override fun onMapReady(gMap: GoogleMap) {
+        googleMap = gMap
 
-        displayCustomerLocation()
+        // Add a default marker (San Francisco, for example)
+        val defaultLocation = LatLng(37.7749, -122.4194)
+        val markerOptions = MarkerOptions().position(defaultLocation).title("Mechanic's Location")
+        googleMap.addMarker(markerOptions)
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 12f))
+
+        fetchAndSaveMechanicLocation()
     }
 
-    private fun fetchMechanicLocation() {
-        // Check location permission
+    private fun fetchAndSaveMechanicLocation() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
                 requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST_CODE
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                PERMISSION_REQUEST_CODE
             )
             return
         }
 
-        // Fetch mechanic's current location
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
-                location?.let {
-                    val mechanicId = FirebaseAuth.getInstance().currentUser?.uid
-                    val mechanicLocation = LocationData(location.latitude, location.longitude)
-                    mechanicId?.let {
-                        mechanicLocationRef.child(mechanicId).setValue(mechanicLocation)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    fetchCustomerLocation()
-                                } else {
-                                    // Handle failure to save mechanic location
-                                }
-                            }
-                    }
-                }
+                database.child("mechanicLocation").setValue("${location.latitude}, ${location.longitude}")
+
+                val mechanicLocation = LatLng(location.latitude, location.longitude)
+                val markerOptions = MarkerOptions().position(mechanicLocation).title("Mechanic's Location")
+                googleMap.clear()
+                googleMap.addMarker(markerOptions)
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mechanicLocation, 12f))
             }
             .addOnFailureListener { e ->
-                // Handle failure to retrieve the location
-                Toast.makeText(requireContext(), "Failed to get location: $e", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Failed to fetch location: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
-    private fun fetchCustomerLocation() {
-        val mechanicId = FirebaseAuth.getInstance().currentUser?.uid
-        mechanicId?.let { mechId ->
-            customerLocationRef.child(mechId).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val customerLocation = dataSnapshot.getValue(LocationData::class.java)
-                    customerLocation?.let {
-                        val customerLatLng = LatLng(it.latitude, it.longitude)
-                        val markerOptions = MarkerOptions().position(customerLatLng)
-                            .title("Customer's Location")
-                        googleMap.addMarker(markerOptions)
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(customerLatLng, 12f))
-                    }
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    // Handle database error
-                }
-            })
-        }
+    private fun showDataSavedAlert() {
+        val message = "The data has been saved."
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
-    private fun displayCustomerLocation() {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
-        userId?.let { mechanicId ->
-            customerLocationRef.child(mechanicId)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val customerLocation = dataSnapshot.getValue(LocationData::class.java)
-                        customerLocation?.let {
-                            val customerLatLng = LatLng(customerLocation.latitude, customerLocation.longitude)
-                            val markerOptions = MarkerOptions().position(customerLatLng).title("Customer's Location")
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(customerLatLng, 12f))
-                            googleMap.addMarker(markerOptions)
-                        }
-                    }
 
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        // Handle database error
-                    }
-                })
-        }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.mapView.onDestroy()
     }
 
     override fun onResume() {
         super.onResume()
-        mapView.onResume()
+        binding.mapView.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        mapView.onPause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mapView.onDestroy()
+        binding.mapView.onPause()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        mapView.onLowMemory()
+        binding.mapView.onLowMemory()
     }
 
     companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1001
+        private const val PERMISSION_REQUEST_CODE = 1
     }
 }
-
-data class LocationData(val latitude: Double = 0.0, val longitude: Double = 0.0)
