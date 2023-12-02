@@ -34,7 +34,7 @@ RepairPal is an Android mobile application that connects mechanics and vehicle o
 2. Click on `File`, then `New`, and then `Project from Version Control`.
 3. In the URL field, enter
    ```sh
-    `https://github.com/mikemwai/repairpal.git`
+    https://github.com/mikemwai/repairpal.git
    ```
 4. Click on `Clone`.
 
