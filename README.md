@@ -1,5 +1,5 @@
-# repairpal
-RepairPal is an android mobile application that connects mechanics and vehicle owners/drivers to provide the service of vehicle-related assistance.
+# repairpal: A mobile app that connects mechanics and drivers for vehicle assistance.
+RepairPal is an Android mobile application that connects mechanics and vehicle owners/drivers to provide the service of vehicle-related assistance.
 
 ## Features
 
@@ -31,7 +31,7 @@ RepairPal is an android mobile application that connects mechanics and vehicle o
 #### Importing Directly into Android Studio
 
 1. Open Android Studio.
-2. Click on `File`, then `New` and then `Project from Version Control`.
+2. Click on `File`, then `New`, and then `Project from Version Control`.
 3. In the URL field, enter `https://github.com/mikemwai/repairpal.git`.
 4. Click on `Clone`.
 
