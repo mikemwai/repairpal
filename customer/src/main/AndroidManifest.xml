@@ -16,9 +16,25 @@
         android:theme="@style/Theme.RepairPal"
         tools:targetApi="31">
         <activity
+            android:name=".IssuesList"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".CompleteActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".PayActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".CheckoutActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".InspectionActivity"
             android:exported="true"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".MechDrawer"
             android:exported="true"

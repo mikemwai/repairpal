@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
     android:layout_height="match_parent"
     tools:context=".StartActivity">
 
-    <!-- Customer Button -->
-    <Button
-        android:id="@+id/btnCustomer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="108dp"
-        android:text="Customer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="650dp"
+        android:src="@drawable/logo"
+         />
 
-    <!-- Mechanic Button -->
-    <Button
-        android:id="@+id/btnMechanic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnCustomer"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="200dp"
-        android:text="Mechanic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_alignParentBottom="true"
+android:orientation="horizontal"
+android:gravity="center">
+
+<Button
+    android:id="@+id/btnCustomer"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:backgroundTint="#000080"
+    android:textColor="@color/white"
+    android:text="Customer" />
+
+<Button
+    android:id="@+id/btnMechanic"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:backgroundTint="#000080"
+    android:textColor="@color/white"
+    android:text="Mechanic" />
+</LinearLayout>
+
+</LinearLayout>

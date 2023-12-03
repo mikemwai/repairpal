@@ -11,16 +11,15 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/material_dynamic_tertiary80"
         android:text="Client issue details"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="392dp"
-        android:layout_height="383dp"
+        android:layout_height="400dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -43,55 +42,66 @@
             android:layout_width="match_parent"
             android:layout_height="299dp">
 
-            <EditText
-                android:id="@+id/clientOwner"
+            <TextView
+                android:id="@+id/heading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Client Owner" />
+                android:text="Details"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:padding="8dp" />
 
-            <EditText
-                android:id="@+id/vehicleName"
+            <LinearLayout
+                android:id="@+id/form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/clientOwner"
-                android:layout_marginTop="16dp"
-                android:hint="Vehicle Name" />
+                android:layout_below="@id/heading"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <Spinner
-                android:id="@+id/issueType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/vehicleName"
-                android:layout_marginTop="16dp" />
+                <EditText
+                    android:id="@+id/clientOwner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Client:Joy" />
 
-            <EditText
-                android:id="@+id/issueDescription"
+                <EditText
+                    android:id="@+id/vehicleType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Vehicle Type: Four Wheel" />
+
+                <EditText
+                    android:id="@+id/issueDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Issue Description: Battery, Flat Tire"
+                    android:inputType="textMultiLine" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/issueType"
-                android:layout_marginTop="16dp"
-                android:hint="More description" />
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:gravity="center">
 
             <Button
                 android:id="@+id/declineButton"
-                android:layout_width="0dp"
+                android:layout_width="210dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/issueDescription"
-                android:layout_marginTop="16dp"
-                android:text="Decline"
-                app:layout_constraintEnd_toStartOf="@+id/acceptButton"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:backgroundTint="#000080"
+                android:textColor="@color/white"
+                android:text="Decline" />
 
             <Button
                 android:id="@+id/acceptButton"
-                android:layout_width="0dp"
+                android:layout_width="210dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/issueDescription"
-                android:layout_marginTop="16dp"
-                android:text="Accept"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/declineButton" />
+                android:backgroundTint="#000080"
+                android:textColor="@color/white"
+                android:text="Accept" />
+            </LinearLayout>
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

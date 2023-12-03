@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vehicle repair charges"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/charges"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ksh 2000"
+        android:textSize="45dp"
+        android:layout_below="@id/header"
+        android:textColor="@color/black"
+        android:background="#979898"
+        android:gravity="center"
+        android:paddingTop="10dp" />
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/charges"
+        android:background="#979898"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp">
+
+
+        <Button
+            android:id="@+id/confirmButton"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text="Confirm Payment"
+            android:backgroundTint="#000080"
+            android:textColor="@color/white"
+            android:layout_marginRight="16dp" />
+
+        <Button
+            android:id="@+id/declineButton"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#000080"
+            android:layout_below="@id/confirmButton"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="Decline" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/chargesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonLayout"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/issuesHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chargesText"
+        android:text="Vehicle issues"
+        android:textColor="@color/black"
+        android:layout_margin="16dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/issue1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/issuesHeader"
+        android:text="Flat Tire"
+        android:layout_margin="16dp" />
+
+    <TextView
+        android:id="@+id/issue2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/issue1"
+        android:text="Battery Issue"
+        android:layout_margin="16dp" />
+
+</RelativeLayout>
