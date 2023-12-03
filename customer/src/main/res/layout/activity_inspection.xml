@@ -73,25 +73,33 @@
                 android:layout_marginTop="16dp"
                 android:hint="More description" />
 
-            <Button
+            <!--<Button
                 android:id="@+id/declineButton"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/issueDescription"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="9dp"
                 android:text="Decline"
                 app:layout_constraintEnd_toStartOf="@+id/acceptButton"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:id="@+id/acceptButton"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/issueDescription"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
                 android:text="Accept"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/declineButton" />
+                app:layout_constraintStart_toEndOf="@+id/declineButton" />-->
+
+            <Button
+                android:id="@+id/btnProceedToPayment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Proceed to Payment"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

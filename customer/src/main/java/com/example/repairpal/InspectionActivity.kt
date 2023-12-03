@@ -1,6 +1,8 @@
 package com.example.repairpal
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
@@ -12,6 +14,7 @@ class InspectionActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var requestRef: DatabaseReference
     private lateinit var mechanicGeoRef: DatabaseReference
+    private lateinit var btnProceedToPayment: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +26,13 @@ class InspectionActivity : AppCompatActivity(), OnMapReadyCallback {
 
         requestRef = FirebaseDatabase.getInstance().reference.child("requests")
         mechanicGeoRef = FirebaseDatabase.getInstance().reference.child("mechanic_geo_location")
+
+        btnProceedToPayment = findViewById(R.id.btnProceedToPayment)
+
+        btnProceedToPayment.setOnClickListener {
+            val intent = Intent(this, PaymentActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
