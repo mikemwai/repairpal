@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#FFFFFF"
+        tools:context=".PayActivity">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose payment method"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:padding="20dp"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <RadioButton
+                android:id="@+id/radio_credit_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Credit card"
+                android:padding="10dp"/>
+
+            <RadioButton
+                android:id="@+id/radio_mpesa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mpesa"
+                android:padding="10dp"/>
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/payNow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pay now"
+            android:backgroundTint="#000080"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:padding="15dp"/>
+    </LinearLayout>
+

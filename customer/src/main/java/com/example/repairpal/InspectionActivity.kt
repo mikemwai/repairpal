@@ -1,7 +1,9 @@
 package com.example.repairpal
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.repairpal.databinding.ActivityInspectionBinding
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.firebase.database.*
@@ -12,14 +14,24 @@ class InspectionActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var requestRef: DatabaseReference
     private lateinit var mechanicGeoRef: DatabaseReference
+    private lateinit var binding: ActivityInspectionBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_inspection)
+        binding = ActivityInspectionBinding.inflate(layoutInflater) // Inflate the layout using binding
+        setContentView(binding.root)
+
 
         mapView = findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+
+        binding.declineButton.setOnClickListener {
+            startActivity(Intent(this, MechDrawer::class.java))
+        }
+        binding.acceptButton.setOnClickListener {
+            startActivity(Intent(this, IssuesList::class.java))
+        }
 
         requestRef = FirebaseDatabase.getInstance().reference.child("requests")
         mechanicGeoRef = FirebaseDatabase.getInstance().reference.child("mechanic_geo_location")

@@ -1,11 +1,13 @@
 package com.example.repairpal
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import android.widget.Button
+import com.example.repairpal.databinding.ActivityCustomerMapsBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
@@ -20,10 +22,12 @@ class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mechanicsRef: DatabaseReference
     private lateinit var requestButton: Button
+    private lateinit var binding: ActivityCustomerMapsBinding // Declare binding at the class level
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_customer_maps)
+        binding = ActivityCustomerMapsBinding.inflate(layoutInflater) // Inflate the layout using binding
+        setContentView(binding.root) // Set content view using binding.root
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -31,7 +35,12 @@ class CustomerMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         mechanicsRef = FirebaseDatabase.getInstance().reference.child("mechanics")
 
-        requestButton = findViewById(R.id.requestButton)
+        // Access views using binding
+        binding.payButton.setOnClickListener {
+            startActivity(Intent(this, CheckoutActivity::class.java))
+        }
+
+        requestButton = binding.requestButton
         requestButton.setOnClickListener {
             requestButton.text = "Searching for Mechanics..."
             saveRequestToFirebase()
