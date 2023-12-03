@@ -3,15 +3,15 @@ RepairPal is an Android mobile application that connects mechanics and vehicle o
 
 ## Features
 
-- Connect with mechanics in real-time
-- Schedule appointments for vehicle repairs
-- Rate and review mechanics
-- In-app navigation to the mechanic's location
-- Real-time updates on repair progress
+- Connect with mechanics in real-time.
+- Schedule appointments for vehicle repairs.
+- Rate and review mechanics.
+- In-app navigation to the mechanic's location.
+- Real-time updates on repair progress.
 
 ## Prerequisites
 
-- Android Studio (latest version recommended)
+- [Android Studio](https://developer.android.com/studio)
 - Git
 
 ## Project Setup
@@ -30,7 +30,7 @@ RepairPal is an Android mobile application that connects mechanics and vehicle o
 
 - Open Android Studio.
 - Click on `File`, then `New`, and then `Project from Version Control`.
-- In the URL field, enter
+- In the URL field, enter:
 ```sh
   https://github.com/mikemwai/repairpal.git
 ```
@@ -46,7 +46,7 @@ RepairPal is an Android mobile application that connects mechanics and vehicle o
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+[Pull requests](https://github.com/mikemwai/repairpal/pulls) are welcome. For major changes, please open an [issue](https://github.com/mikemwai/repairpal/issues/new) first to discuss what you would like to change.
 
 ## License
 
