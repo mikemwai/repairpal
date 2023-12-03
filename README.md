@@ -16,7 +16,7 @@ RepairPal is an Android mobile application that connects mechanics and vehicle o
 
 ## Project Setup
 
-#### Pulling the Project from GitHub via Command Line
+#### <ins>Pulling the Project from GitHub via Command Line</ins>
 
 - Open your terminal.
 - Navigate to the location where you want the cloned directory.
@@ -26,7 +26,7 @@ RepairPal is an Android mobile application that connects mechanics and vehicle o
 ```
 - Press Enter to create your local clone.
 
-#### Importing Directly into Android Studio
+#### <ins>Importing Directly into Android Studio</ins>
 
 - Open Android Studio.
 - Click on `File`, then `New`, and then `Project from Version Control`.
