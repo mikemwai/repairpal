@@ -1,4 +1,4 @@
-# repairpal
+# Repairpal
 RepairPal is an Android mobile application that connects mechanics and vehicle owners/drivers to provide the service of vehicle-related assistance.
 
 ## Features
